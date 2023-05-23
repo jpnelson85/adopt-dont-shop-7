@@ -19,10 +19,15 @@ class ApplicantsController < ApplicationController
     if applicant.save
       redirect_to "/applicants/#{applicant.id}"
     else
-      require 'pry'; binding.pry
       redirect_to "/applicants/new"
       flash[:alert] = "Please see examples and enter a valid response with no empty fields"
     end
+  end
+
+  def update
+    applicant = Applicant.find(params[:id])
+    applicant.update(app_params)
+    redirect_to "/applicants/#{applicant.id}"
   end
 
   private

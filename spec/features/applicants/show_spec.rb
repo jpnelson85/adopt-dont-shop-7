@@ -29,7 +29,7 @@ RSpec.describe "the application show page" do
     expect(page).to have_content(applicant_1.name)
     expect(page).to have_content("Full Address: #{applicant_1.street_address} #{applicant_1.city} #{applicant_1.state} #{applicant_1.zip_code}")
     expect(page).to have_content(applicant_1.qualification)
-    expect(page).to have_content("Pet Name(s): #{pet_1.name}")
+    expect(page).to have_content("#{pet_1.name}")
     expect(page).to have_content(applicant_1.application_status)
     expect(page).to have_link("Scooby")
   end
@@ -75,5 +75,25 @@ RSpec.describe "the application show page" do
 
     expect(current_path).to eq("/applicants/#{applicant_1.id}")
     expect(page).to have_content("#{pet_1.name}")
+  end
+
+  it "Submit an Application: update description and pending" do
+    shelter = Shelter.create!(name: "Aurora shelter", city: "Aurora, CO", foster_program: false, rank: 9)
+    pet_1 = shelter.pets.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
+    pet_2 = shelter.pets.create!(name: "Scrappy", age: 3, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
+    pet_3 = shelter.pets.create!(name: "Dakota", age: 3, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
+    applicant_1 = Applicant.create!(name: "Jimmy", street_address: "1234 road test", city: "Boca Raton", state: "FL", zip_code: "33498", qualification: "I love pets")
+    app_1 = ApplicantPet.create!(applicant: applicant_1, pet: pet_1)
+    app_2 = ApplicantPet.create!(applicant: applicant_1, pet: pet_2)
+    visit "/applicants/#{applicant_1.id}"
+    expect(page).to have_button("Submit Application")
+    fill_in(:qualification, with: "I have land and need for more pets")
+    click_button("Submit Application")
+    expect(page).to have_content("Reason: I have land and need for more pets")
+    expect(page).to have_content("App Status: Pending")
+    expect(page).to_not have_content("In Progress")
+    expect(page).to have_content("Scooby")
+    expect(page).to have_content("Scrappy")
+    expect(page).to_not have_content("Dakota")
   end
 end

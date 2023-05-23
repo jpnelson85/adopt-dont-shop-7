@@ -4,8 +4,9 @@
   <p>Full Address: <%= @applicant.street_address %> <%= @applicant.city %> <%= @applicant.state %> <%= @applicant.zip_code %> </p>
   <p> Reason: <%= @applicant.qualification %> </p>
   <p> App Status: <%= @applicant.application_status %> </p>
+  <p> Pet Name(s): </p>
 <% @applicant.pets.each do |pet| %>
-  <p> Pet Name(s): <%= link_to "#{pet.name}", "/pets/#{pet.id}" %> </p> <br>
+  <p> <%= link_to "#{pet.name}", "/pets/#{pet.id}" %> </p> <br>
 <% end %>
 
 <%= form_with url: "/applicants/#{@applicant.id}", method: :get, local: true do |f| %>
@@ -21,6 +22,15 @@
         <%= f.hidden_field :pet_id, value: pet.id %>
         <%= f.submit "Adopt this Pet"%>
     <% end %>
+  <% end %>
+<% end %>
+<br>
+<% if @applicant.application_status == "In Progress" && @applicant.pets.present? %>
+  <%= form_with url: "/applicants/#{@applicant.id}", method: :patch, local: true do |f| %>
+    <%= f.label :qualification %>
+    <%= f.text_field :qualification %>
+    <%= f.hidden_field :application_status, value: "Pending" %>
+    <%= f.submit "Submit Application"%>
   <% end %>
 <% end %>
 
