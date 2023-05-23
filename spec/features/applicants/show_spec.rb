@@ -115,7 +115,7 @@ RSpec.describe "the application show page" do
     expect(page).to_not have_content("Dakota")
   end
 
-  it 'will show partial matches for pet names' do
+  it 'will show partial matches for pet names and case insensitive' do
     shelter = Shelter.create!(name: "Aurora shelter", city: "Aurora, CO", foster_program: false, rank: 9)
     pet_1 = shelter.pets.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
     pet_2 = shelter.pets.create!(name: "Scrappy", age: 3, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
