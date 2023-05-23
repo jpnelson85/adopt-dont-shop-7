@@ -114,4 +114,24 @@ RSpec.describe "the application show page" do
     expect(page).to_not have_content("Scrappy")
     expect(page).to_not have_content("Dakota")
   end
+
+  it 'will show partial matches for pet names' do
+    shelter = Shelter.create!(name: "Aurora shelter", city: "Aurora, CO", foster_program: false, rank: 9)
+    pet_1 = shelter.pets.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
+    pet_2 = shelter.pets.create!(name: "Scrappy", age: 3, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
+    pet_3 = shelter.pets.create!(name: "Dakota", age: 3, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
+    applicant_1 = Applicant.create!(name: "Jimmy", street_address: "1234 road test", city: "Boca Raton", state: "FL", zip_code: "33498", qualification: "I love pets")
+  
+    visit "/applicants/#{applicant_1.id}"
+
+    fill_in :search, with: "Scoo"
+    click_on("Search")
+
+    expect(page).to have_content("Scooby")
+
+    fill_in :search, with: "dak"
+    click_on("Search")
+
+    expect(page).to have_content("Dakota")
+  end
 end
