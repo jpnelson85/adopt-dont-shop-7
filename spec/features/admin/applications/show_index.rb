@@ -9,15 +9,14 @@ RSpec.describe "Admin Application Show Page" do
 
     visit "/admin/applications/#{applicant_1.id}"
 
+    within("#applicant-#{applicant_1.id}") do
     expect(page).to have_button("Approve Application")
     click_button("Approve Application")
 
-
-
     expect(current_path).to eq("/admin/applications/#{applicant_1.id}")
-
     expect(page).to_not have_button("Approve Application")
     expect(page).to have_content("Approved")
+    end
   end
 
   it "Rejecting a Pet for Adoption" do
@@ -28,13 +27,14 @@ RSpec.describe "Admin Application Show Page" do
 
     visit "/admin/applications/#{applicant_1.id}"
 
+    within("#applicant-#{applicant_1.id}") do
     expect(page).to have_button("Reject Application")
     click_button("Reject Application")
 
     expect(page).to_not have_button("Approve Application")
     expect(page).to_not have_button("Reject Application")
-
     expect(page).to have_content("Rejected")
+    end
   end
 
   it "Approved/Rejected Pets on one Application do not affect other Applications" do
@@ -48,6 +48,7 @@ RSpec.describe "Admin Application Show Page" do
 
     visit "/admin/applications/#{applicant_1.id}"
 
+    within("#applicant-#{applicant_1.id}") do
     expect(page).to have_button("Reject Application")
     click_button("Reject Application")
 
@@ -55,5 +56,6 @@ RSpec.describe "Admin Application Show Page" do
 
     expect(page).to have_button("Approve Application")
     expect(page).to have_button("Reject Application")
+    end
   end
 end

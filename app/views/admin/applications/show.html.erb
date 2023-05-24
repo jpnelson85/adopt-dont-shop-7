@@ -4,7 +4,8 @@
 <h3>Pet Name: <%= pet.name %></h3>
 <h3>Status: <%= @applicant.application_status %></h3>
   <% if @applicant.application_status = "Pending" && @applicant.application_status != "Approved" && @applicant.application_status != "Rejected" %>
-    <%= form_with url: "/admin/applications/#{@applicant.id}", method: :patch, local: true do |f| %>
+  <div id="applicant-<%= @applicant.id %>">
+      <%= form_with url: "/admin/applications/#{@applicant.id}", method: :patch, local: true do |f| %>
       <%= f.hidden_field :applicant_id, value: "#{@applicant.id}" %>
       <%= f.hidden_field :application_status, value: "Approved" %>
       <%= f.submit "Approve Application" %>    
@@ -14,6 +15,7 @@
       <%= f.hidden_field :application_status, value: "Rejected" %>
       <%= f.submit "Reject Application" %>    
     <% end %>
+    </div>
   <% end %>
 <% end %>
 
