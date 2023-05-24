@@ -27,6 +27,7 @@ RSpec.describe "the pets index" do
 
     visit "/pets"
 
+    expect(page).to have_content(pet_2.name)
     expect(page).to_not have_content(pet_3.name)
   end
 
@@ -62,7 +63,9 @@ RSpec.describe "the pets index" do
   end
 
   it "has a text box to filter results by keyword" do
+    
     visit "/pets"
+    
     expect(page).to have_button("Search")
   end
 
@@ -83,10 +86,12 @@ RSpec.describe "the pets index" do
   end
 
   it "Pet index page displays Start an Application Link" do
+    
     visit "/pets"
 
     expect(page).to have_button("Start an Application")
     click_button("Start an Application")
+    
     expect(current_path).to eq("/applicants/new")
   end
 end
