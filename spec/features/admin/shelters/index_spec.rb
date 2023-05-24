@@ -9,19 +9,21 @@ RSpec.describe "admin shelters index page" do
   end
 
   it 'when visited, see all shelters in system in reverse alphabeltical order by name' do
-  visit "/admin/shelters"
+    visit "/admin/shelters"
 
-  expect(page).to have_content(@shelter_1.name)
-  expect(page).to have_content(@shelter_2.name)
-  expect(page).to have_content(@shelter_3.name)
-  expect(@shelter_1.name).to_not appear_before(@shelter_3.name)
-  expect(@shelter_2.name).to appear_before(@shelter_3.name)
+    expect(page).to have_content(@shelter_1.name)
+    expect(page).to have_content(@shelter_2.name)
+    expect(page).to have_content(@shelter_3.name)
+    expect(@shelter_1.name).to_not appear_before(@shelter_3.name)
+    expect(@shelter_2.name).to appear_before(@shelter_3.name)
   end
 
   it 'be able to see section for "Shelters with Pending Applications"' do
     visit "/admin/shelters"
 
+    within("#shelters") do
     expect(page).to have_content("Shelters with Pending Applications")
+    end
   end
 
   it 'see name of every shelter with pending application in "Shelters with Pending Applications"' do
