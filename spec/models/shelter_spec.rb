@@ -30,6 +30,16 @@ RSpec.describe Shelter, type: :model do
       end
     end
 
+    describe "#shelters_with_pending_apps" do
+      it 'returns shelters with pending apps and distinct' do
+        shelter_1 = Shelter.create(name: "Aurora shelter", city: "Aurora, CO", foster_program: false, rank: 9)
+        pet_1 = Pet.create(adoptable: true, age: 1, breed: "sphynx", name: "Bare-y Manilow", shelter_id: shelter_1.id)
+        applicant_1 = Applicant.create!(name: "Jimmy", street_address: "1234 road test", city: "Boca Raton", state: "FL", zip_code: "33498", qualification: "I love pets", application_status: "Pending")
+        app_1 = ApplicantPet.create!(applicant: applicant_1, pet: pet_1)
+        expect(Shelter.shelters_with_pending_apps).to eq([shelter_1])
+      end
+    end
+
     describe "view shelters in desc alphabetical order" do
       it "returns shelters in desc alphabetical order" do
         expect(Shelter.order_shelters_reverse_alphabetical).to eq([@shelter_2, @shelter_3, @shelter_1])
