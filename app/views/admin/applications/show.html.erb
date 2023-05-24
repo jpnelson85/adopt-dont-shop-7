@@ -1,0 +1,15 @@
+<h1>Application Show Page </h1>
+
+<% @pets.each do |pet| %>
+<h3>Pet Name: <%= pet.name %></h3>
+<h3>Status: <%= @applicant.application_status %></h3>
+  <% if @applicant.application_status = "Pending" && @applicant.application_status != "Approved" %>
+    <%= form_with url: "/admin/applications/#{@applicant.id}", method: :patch, local: true do |f| %>
+      <%= f.hidden_field :applicant_id, value: "#{@applicant.id}" %>
+      <%= f.hidden_field :application_status, value: "Approved" %>
+      <%= f.submit "Approve Application" %>    
+    <% end %>
+  <% end %>
+<% end %>
+
+
