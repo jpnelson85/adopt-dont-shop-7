@@ -21,6 +21,7 @@ class ApplicantsController < ApplicationController
     else
       redirect_to "/applicants/new"
       flash[:alert] = "Please see examples and enter a valid response with no empty fields"
+
     end
   end
 
